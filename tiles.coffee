@@ -14,13 +14,13 @@ getBoardSize = (board) ->
 
 cloneBoard = (board) ->
   size = getBoardSize board
-  rows = []
+  empty = getEmptyBoard size
+
   for j in [0...size]
-    row = []
-    rows[j] = row
     for i in [0...size]
-      row[i] = board[j][i]
-  return rows
+      empty[j][i] = board[j][i]
+
+  return empty
 
 getTileNumbers = (nTiles) ->
   [0...nTiles]
@@ -101,20 +101,44 @@ fillBoard = (board, nTiles) ->
   return addRemainingTiles addInitialTiles(board, nTiles), nTiles
 
 boardToString = (board) ->
-  s = ''
   size = getBoardSize board
+  s = ''
 
   for j in [0...size]
     s += "#{j}: "
     for i in [0...size]
-      if isEmpty board, [j, i]
+      if isEmpty board, [i, j]
         s += '. '
       else
         s += board[j][i] + ' '
 
-    s += "\n"
+    s += '\n'
 
   return s
 
-board = fillBoard(getEmptyBoard(4), 4)
-console.log boardToString board#, getNeighbours board, [3, 3]
+getOnly = (board, tile) ->
+  board = cloneBoard board
+  size = getBoardSize board
+
+  for j in [0...size]
+    for i in [0...size]
+      if board[j][i] isnt tile
+        board[j][i] = null
+
+  return board
+
+boardToTiles = (board, nTiles) ->
+  tiles = []
+
+  for tile in getTileNumbers nTiles
+    tiles.push getOnly board, tile
+
+  return tiles
+
+main = ->
+  size = 4
+  nTiles = 4
+  board = fillBoard(getEmptyBoard(size), nTiles)
+  console.log boardToTiles(board, nTiles).map(boardToString).join('\n')
+
+main()
