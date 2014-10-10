@@ -244,9 +244,7 @@ tiledBy = (board, tiles, nTiles) ->
 getTiles = (board, nTiles) ->
   return boardToTiles(board, nTiles).map(trimBoard)
 
-runTest = (getTiledBoard) ->
-  size = 4
-  nTiles = 4
+runTest = (getTiledBoard, size, nTiles) ->
   board = fillBoard(getEmptyBoard(size), nTiles)
   tiles = getTiles(board, nTiles)
 
@@ -261,10 +259,7 @@ runTest = (getTiledBoard) ->
   console.log 'Your tiling:\n'
   console.log boardToString tiledBoard
 
-  if tiledBy tiledBoard, tiles, nTiles
-    console.log 'Your solution worked!'
-  else
-    console.log 'Your solution is not correct!'
+  return tiledBy tiledBoard, tiles, nTiles
 
 getTiledBoard = (emptyBoard, tiles) ->
   # --------- Your code goes in here -----------
@@ -272,6 +267,26 @@ getTiledBoard = (emptyBoard, tiles) ->
   # --------- Your code ends here --------------
 
 main = ->
-  runTest getTiledBoard
+  start = 3
+  k = 6
+
+  solved = []
+  for i in [start..k]
+    solved[i] = false
+
+  for i in [start..k]
+    console.log "Let's try tiling a #{i} x #{i} board with #{i} tiles:\n"
+    size = i
+    nTiles = i
+    solved[i] = runTest getTiledBoard, size, nTiles
+
+    if solved[i]
+      console.log 'Your solution worked!\n'
+    else
+      console.log 'Your solution is not correct!\n'
+      break
+
+  console.log 'Solved?\n'
+  console.log (solved[start..].map (s, i) -> "(#{i + start}x#{i + start}): " + if s then 'Yes!' else 'No!').join('\n')
 
 main()

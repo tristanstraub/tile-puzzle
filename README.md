@@ -10,42 +10,41 @@ have the same number.
 
 Running tiles.coffee, gives this:
 
+    Let's try tiling a 3 x 3 board with 3 tiles:
+
     Tiles:
 
-    0: 0 . . . 
-    1: 0 . . . 
-    2: 0 0 . . 
-    3: . 0 . . 
+    0: 0 0 0 
+    1: 0 0 0 
+    2: . . . 
 
-    0: 1 . . . 
-    1: . . . . 
-    2: . . . . 
-    3: . . . . 
+    0: 1 . . 
+    1: . . . 
+    2: . . . 
 
-    0: 2 2 2 . 
-    1: 2 2 2 . 
-    2: . 2 . . 
-    3: . . . . 
-
-    0: . 3 . . 
-    1: 3 3 . . 
-    2: . . . . 
-    3: . . . . 
+    0: 2 2 . 
+    1: . . . 
+    2: . . . 
 
     Original tiling:
 
-    0: 0 2 2 2 
-    1: 0 2 2 2 
-    2: 0 0 2 3 
-    3: 1 0 3 3 
+    0: 1 2 2 
+    1: 0 0 0 
+    2: 0 0 0 
 
     Your tiling:
 
-    0: . . . . 
-    1: . . . . 
-    2: . . . . 
-    3: . . . . 
+    0: . . . 
+    1: . . . 
+    2: . . . 
 
     Your solution is not correct!
+
+    Solved?
+
+    (3x3): No!
+    (4x4): No!
+    (5x5): No!
+    (6x6): No!
 
 Modify the code, so that below "Your tiling:", a board is shown that used the tiles provided to tile the board.
