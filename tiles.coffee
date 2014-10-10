@@ -1,5 +1,6 @@
 _ = require 'lodash'
 
+
 getEmptyBoard = (size) ->
   rows = []
   for i in [0...size]
@@ -33,6 +34,14 @@ hasEmpty = (board) ->
   for i in [0...size]
     for j in [0...size]
       if isEmpty board, [j, i]
+        return true
+  return false
+
+hasTiles = (board) ->
+  size = getBoardSize board
+  for i in [0...size]
+    for j in [0...size]
+      if not isEmpty board, [j, i]
         return true
   return false
 
@@ -135,10 +144,134 @@ boardToTiles = (board, nTiles) ->
 
   return tiles
 
-main = ->
+leftIsEmpty = (board) ->
+  size = getBoardSize board
+  for j in [0...size]
+    if not isEmpty board, [0, j]
+      return false
+
+  return true
+
+topIsEmpty = (board) ->
+  size = getBoardSize board
+  for i in [0...size]
+    if not isEmpty board, [i, 0]
+      return false
+
+  return true
+
+shiftUp = (board) ->
+  size = getBoardSize board
+  newBoard = cloneBoard board
+
+  for j in [1...size]
+    for i in [0...size]
+      newBoard[j - 1][i] = board[j][i]
+
+  for i in [0...size]
+    newBoard[size - 1][i] = null
+
+  return newBoard
+
+shiftLeft = (board) ->
+  size = getBoardSize board
+  newBoard = cloneBoard board
+
+  for j in [0...size]
+    for i in [1...size]
+      newBoard[j][i - 1] = board[j][i]
+
+  for j in [0...size]
+    newBoard[j][size - 1] = null
+
+  return newBoard
+
+trimBoard = (board) ->
+  board = cloneBoard board
+
+  if hasTiles board
+    while leftIsEmpty board
+      board = shiftLeft board
+
+  if hasTiles board
+    while topIsEmpty board
+      board = shiftUp board
+
+  return board
+
+trimTiles = (tiles) ->
+  tiles.map trimBoard
+
+sameBoard = (a, b) ->
+  size = getBoardSize a
+  bsize = getBoardSize b
+
+  if size isnt bsize
+    return false
+
+  aHasTiles = hasTiles(a)
+  bHasTiles = hasTiles(b)
+
+  if aHasTiles isnt bHasTiles
+    return false
+
+  if !aHasTiles and !bHasTiles
+    return true
+
+  for j in [0...size]
+    for i in [0...size]
+      if a[j][i] isnt b[j][i]
+        return false
+
+  return true
+
+tilesMatch = (as, bs) ->
+  if as.length isnt bs.length
+    return false
+
+  for a in as
+    found = _.find bs, (b) -> sameBoard a, b
+    if !found
+      return false
+
+  return true
+
+tiledBy = (board, tiles, nTiles) ->
+  createdTiles = boardToTiles(board, nTiles).map(trimBoard)
+
+  return tilesMatch createdTiles, tiles
+
+getTiles = (board, nTiles) ->
+  return boardToTiles(board, nTiles).map(trimBoard)
+
+runTest = (getTiledBoard) ->
   size = 4
   nTiles = 4
   board = fillBoard(getEmptyBoard(size), nTiles)
-  console.log boardToTiles(board, nTiles).map(boardToString).join('\n')
+  tiles = getTiles(board, nTiles)
+
+  console.log 'Tiles:\n'
+  console.log getTiles(board, nTiles).map(boardToString).join('\n')
+
+  console.log 'Original tiling:\n'
+  console.log boardToString board
+
+  tiledBoard = getTiledBoard getEmptyBoard(size), tiles
+
+  console.log 'Your tiling:\n'
+  console.log boardToString tiledBoard
+
+  if tiledBy tiledBoard, tiles, nTiles
+    console.log 'Your solution worked!'
+  else
+    console.log 'Your solution is not correct!'
+
+getTiledBoard = (emptyBoard, tiles) ->
+  # --------- Your code goes in here -----------
+  return emptyBoard
+  # --------- Your code ends here --------------
+
+main = ->
+  runTest getTiledBoard
 
 main()
