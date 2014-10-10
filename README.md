@@ -10,7 +10,7 @@ have the same number.
 
 Running tiles.coffee, gives this:
 
-Tiles:
+    Tiles:
 
     0: 0 . . . 
     1: 0 . . . 
@@ -32,20 +32,20 @@ Tiles:
     2: . . . . 
     3: . . . . 
 
-Original tiling:
+    Original tiling:
 
     0: 0 2 2 2 
     1: 0 2 2 2 
     2: 0 0 2 3 
     3: 1 0 3 3 
 
-Your tiling:
+    Your tiling:
 
     0: . . . . 
     1: . . . . 
     2: . . . . 
     3: . . . . 
 
-Your solution is not correct!
+    Your solution is not correct!
 
 Modify the code, so that below "Your tiling:", a board is shown that used the tiles provided to tile the board.
